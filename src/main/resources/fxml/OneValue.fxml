@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="151.0" prefWidth="254.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OneValueController">
+   <children>
+      <Label layoutX="32.0" layoutY="36.0" text="Wpisz wartość:" />
+      <TextField fx:id="value" layoutX="54.0" layoutY="63.0" />
+      <Button defaultButton="true" layoutX="177.0" layoutY="112.0" mnemonicParsing="false" onAction="#handleOK" prefHeight="25.0" prefWidth="64.0" text="OK" />
+   </children>
+</AnchorPane>
