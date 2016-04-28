@@ -7,7 +7,10 @@ package app;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Arrays;
+import static jdk.nashorn.internal.objects.NativeMath.exp;
 import model.Image;
 
 /**
@@ -86,8 +89,48 @@ public class Binarization {
             meanFirst = newMean;
             times++;
         }
-        
+
         doBlackWhite(bi, getIndexOfValueNearest(meanFirst, this.histogram));
+        this.image.setContent(bi);
+        return image;
+    }
+
+    public Image entropySelection() {
+        BufferedImage bi = this.image.getContent();
+        setHistogram(bi);
+
+        //table of probabilities
+        int pixels = bi.getHeight() * bi.getWidth();
+        BigDecimal[] probability = new BigDecimal[this.histogram.length];
+        for (int i = 0; i < probability.length; i++) {
+            probability[i] = (BigDecimal.valueOf((long) this.histogram[i]).divide(BigDecimal.valueOf((long) pixels)));
+            if (probability[i] == BigDecimal.valueOf(0)) {
+                probability[i] = BigDecimal.valueOf((long) 0.00000001);
+            }
+        }
+
+        //entropy table
+        double[] entropy = new double[this.histogram.length];
+        for (int i = 0; i < entropy.length; i++) {
+            entropy[i] = Math.log(probability[i].doubleValue()) * probability[i].doubleValue();
+            BigDecimal prob = probability[i];
+
+        }
+
+        //find index of smallest entropy       
+        //index is the boundary of black & white  
+        int indexMin = 0;
+        double min = entropy[indexMin];
+
+        for (int i = 1; i < entropy.length; i++) {
+            if (entropy[i] < min) {
+                min = entropy[i];
+                indexMin = i;
+            }
+        }
+
+        doBlackWhite(bi, indexMin);
+
         this.image.setContent(bi);
         return image;
     }

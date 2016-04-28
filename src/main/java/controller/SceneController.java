@@ -339,7 +339,16 @@ public class SceneController implements Initializable {
 
     @FXML
     private void binarEntropySelection(ActionEvent event) {
+        Histogram histogram = new Histogram(this.image.getContent());
+        histogram.setEqualizingLUT();
+        this.image.setContent(histogram.applyLutOnHistogram());
         setImageToGrayscale();
+        
+        Binarization binar = new Binarization(this.image);
+        this.image = binar.entropySelection();
+        
+        javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
+        this.imageView.setImage(img);
     }
 
     @Override
