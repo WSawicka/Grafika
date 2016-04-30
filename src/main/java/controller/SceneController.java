@@ -23,6 +23,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 import lombok.Setter;
+import model.Cube;
 import model.Image;
 import model.Mask;
 
@@ -68,6 +69,19 @@ public class SceneController implements Initializable {
         ImageIO.write(image.getContent(), "jpg", fileToSave);
     }
 
+    private void showCmykRgb() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CmykRgb.fxml"));
+        Parent root = (Parent) loader.load();
+        CmykRgbController crc = loader.getController();
+
+        Scene newScene = new Scene(root);
+        newScene.getStylesheets().add("/styles/Styles.css");
+        Stage newStage = new Stage();
+        newStage.setScene(newScene);
+        crc.setSceneController(this);
+        newStage.showAndWait();
+    }
+    
     private void showAndSetThreeValues() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ThreeValues.fxml"));
         Parent root = (Parent) loader.load();
@@ -98,6 +112,16 @@ public class SceneController implements Initializable {
         this.stage = stage;
     }
 
+    @FXML
+    private void doCmykRgbColours(ActionEvent event) throws IOException{
+        showCmykRgb();
+    }
+    
+    @FXML
+    private void doShowCube(ActionEvent event){
+        Cube cube = new Cube();
+    }
+    
     @FXML
     private void doAdd(ActionEvent event) throws IOException {
         showAndSetThreeValues();
