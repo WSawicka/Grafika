@@ -123,6 +123,20 @@ public class SceneController implements Initializable {
     }
     
     @FXML
+    private void doBezier(ActionEvent event) throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BezierCurve.fxml"));
+        Parent root = (Parent) loader.load();
+        BezierCurveController bcc = loader.getController();
+
+        Scene newScene = new Scene(root);
+        newScene.getStylesheets().add("/styles/Styles.css");
+        Stage newStage = new Stage();
+        newStage.setScene(newScene);
+        bcc.setSceneController(this);
+        newStage.showAndWait();
+    }
+    
+    @FXML
     private void doAdd(ActionEvent event) throws IOException {
         showAndSetThreeValues();
         PointByPoint pbp = new PointByPoint(this.image);

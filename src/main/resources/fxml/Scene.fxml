@@ -24,6 +24,7 @@
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#doCmykRgbColours" text="Kolory w CMYK i RGB" />
                   <MenuItem mnemonicParsing="false" onAction="#doShowCube" text="Kostka RGB" />
+                  <MenuItem mnemonicParsing="false" onAction="#doBezier" text="Krzywa Beziera" />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Przekształcenia punktowe">

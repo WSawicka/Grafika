@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BezierCurveController">
+   <children>
+      <Button defaultButton="true" layoutX="541.0" layoutY="458.0" mnemonicParsing="false" onAction="#doDrawBezier" prefHeight="25.0" prefWidth="74.0" text="Rysuj" />
+      <Button layoutX="626.0" layoutY="458.0" mnemonicParsing="false" onAction="#doClear" prefHeight="25.0" prefWidth="74.0" text="Wyczyść" />
+      <Canvas fx:id="canvas" height="435.0" layoutX="12.0" layoutY="13.0" onMouseClicked="#handleMouseClick" width="697.0" />
+   </children>
+</AnchorPane>
