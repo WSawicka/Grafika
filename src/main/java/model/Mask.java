@@ -100,9 +100,9 @@ public class Mask {
 
     public int getSummary(int[][] mask) {
         int sum = 0;
-        for (int i = 0; i < mask.length; i++) {
+        for (int[] mask1 : mask) {
             for (int j = 0; j < mask.length; j++) {
-                sum += mask[i][j];
+                sum += mask1[j];
             }
         }
         return sum;

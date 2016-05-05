@@ -23,33 +23,36 @@ public class Bezier {
         this.points.add(p);
     }
 
-    public List<Point> getBezierPoints(double step) {
+    public List<Point> getBezierPoints(int steps) {
         List<Point> bezier = new ArrayList<>();
-        int n = this.points.size();
-        if (n > 2) {
+        int n = this.points.size() - 1;
+        if (n >= 2) {
+            double step = 1.0 / steps;
+            bezier.add(this.points.get(0));
             for (double t = step; t < 1; t += step) {
                 int x = 0, y = 0;
-                for (int i = 0; i < this.points.size(); i++) {
+                for (int i = 0; i <= n; i++) {
                     x += (binomialTheorem(n, i) * Math.pow(1 - t, n - i) * Math.pow(t, i) * this.points.get(i).x);
                     y += (binomialTheorem(n, i) * Math.pow(1 - t, n - i) * Math.pow(t, i) * this.points.get(i).y);
                 }
                 bezier.add(new Point(x, y));
             }
+            bezier.add(this.points.get(this.points.size() - 1));
         }
         return bezier;
     }
 
     // dwumian Newtona
-    private double binomialTheorem(double n, double i) {
+    public int binomialTheorem(int n, int i) {
         if (i == 0 || i == n) {
             return 1;
         } else {
-            return factorial(n) / (factorial(i) * factorial(n - 1));
+            return factorial(n) / (factorial(i) * factorial(n - i));
         }
     }
 
     // silnia
-    public double factorial(double i) {
+    public int factorial(int i) {
         if (i == 0) {
             return 1;
         } else {

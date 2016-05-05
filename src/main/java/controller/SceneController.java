@@ -69,61 +69,23 @@ public class SceneController implements Initializable {
         ImageIO.write(image.getContent(), "jpg", fileToSave);
     }
 
-    private void showCmykRgb() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CmykRgb.fxml"));
-        Parent root = (Parent) loader.load();
-        CmykRgbController crc = loader.getController();
-
-        Scene newScene = new Scene(root);
-        newScene.getStylesheets().add("/styles/Styles.css");
-        Stage newStage = new Stage();
-        newStage.setScene(newScene);
-        crc.setSceneController(this);
-        newStage.showAndWait();
-    }
-    
-    private void showAndSetThreeValues() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ThreeValues.fxml"));
-        Parent root = (Parent) loader.load();
-        ThreeValuesController tvc = loader.getController();
-
-        Scene newScene = new Scene(root);
-        newScene.getStylesheets().add("/styles/Styles.css");
-        Stage newStage = new Stage();
-        newStage.setScene(newScene);
-        tvc.setSceneController(this);
-        newStage.showAndWait();
-    }
-
-    private void showAndSetOneValue() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/OneValue.fxml"));
-        Parent root = (Parent) loader.load();
-        OneValueController ovc = loader.getController();
-
-        Scene newScene = new Scene(root);
-        newScene.getStylesheets().add("/styles/Styles.css");
-        Stage newStage = new Stage();
-        newStage.setScene(newScene);
-        ovc.setSceneController(this);
-        newStage.showAndWait();
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
+    @FXML
+    private void doDrawShapes(ActionEvent event) throws IOException {
+        showDrawShapes();
     }
 
     @FXML
-    private void doCmykRgbColours(ActionEvent event) throws IOException{
+    private void doCmykRgbColours(ActionEvent event) throws IOException {
         showCmykRgb();
     }
-    
+
     @FXML
-    private void doShowCube(ActionEvent event){
+    private void doShowCube(ActionEvent event) {
         Cube cube = new Cube();
     }
-    
+
     @FXML
-    private void doBezier(ActionEvent event) throws IOException{
+    private void doBezier(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BezierCurve.fxml"));
         Parent root = (Parent) loader.load();
         BezierCurveController bcc = loader.getController();
@@ -135,7 +97,7 @@ public class SceneController implements Initializable {
         bcc.setSceneController(this);
         newStage.showAndWait();
     }
-    
+
     @FXML
     private void doAdd(ActionEvent event) throws IOException {
         showAndSetThreeValues();
@@ -381,12 +343,68 @@ public class SceneController implements Initializable {
         histogram.setEqualizingLUT();
         this.image.setContent(histogram.applyLutOnHistogram());
         setImageToGrayscale();
-        
+
         Binarization binar = new Binarization(this.image);
         this.image = binar.entropySelection();
-        
+
         javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
         this.imageView.setImage(img);
+    }
+
+    private void showDrawShapes() throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DrawShapes.fxml"));
+        Parent root = (Parent) loader.load();
+        DrawShapesController dsc = loader.getController();
+
+        Scene newScene = new Scene(root);
+        newScene.getStylesheets().add("/styles/Styles.css");
+        Stage newStage = new Stage();
+        newStage.setScene(newScene);
+        dsc.setSceneController(this);
+        newStage.showAndWait();
+    }
+    
+    private void showCmykRgb() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CmykRgb.fxml"));
+        Parent root = (Parent) loader.load();
+        CmykRgbController crc = loader.getController();
+
+        Scene newScene = new Scene(root);
+        newScene.getStylesheets().add("/styles/Styles.css");
+        Stage newStage = new Stage();
+        newStage.setScene(newScene);
+        crc.setSceneController(this);
+        newStage.showAndWait();
+    }
+
+    private void showAndSetThreeValues() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ThreeValues.fxml"));
+        Parent root = (Parent) loader.load();
+        ThreeValuesController tvc = loader.getController();
+
+        Scene newScene = new Scene(root);
+        newScene.getStylesheets().add("/styles/Styles.css");
+        Stage newStage = new Stage();
+        newStage.setScene(newScene);
+        tvc.setSceneController(this);
+        newStage.showAndWait();
+    }
+
+    private void showAndSetOneValue() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/OneValue.fxml"));
+        Parent root = (Parent) loader.load();
+        OneValueController ovc = loader.getController();
+
+        Scene newScene = new Scene(root);
+        newScene.getStylesheets().add("/styles/Styles.css");
+        Stage newStage = new Stage();
+        newStage.setScene(newScene);
+        ovc.setSceneController(this);
+        newStage.showAndWait();
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     @Override

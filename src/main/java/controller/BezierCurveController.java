@@ -7,7 +7,6 @@ package controller;
 
 import java.awt.Point;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -16,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import model.Bezier;
 
 /**
@@ -34,21 +34,25 @@ public class BezierCurveController implements Initializable {
     @FXML
     private void handleMouseClick(MouseEvent event) {
         bezier.addPoint(new Point((int) event.getX(), (int) event.getY()));
-        gc.strokeOval((int) event.getX(), (int) event.getY(), 3, 3);
+        gc.setStroke(Color.RED);
+        gc.strokeOval((int) event.getX() - 2, (int) event.getY() - 2, 3, 3);
     }
 
     @FXML
     private void doDrawBezier(ActionEvent event) {
-        List<Point> points = bezier.getBezierPoints(0.1);
-        
+        List<Point> points = bezier.getBezierPoints(30);
+
+        gc.setStroke(Color.BLACK);
         for (int i = 1; i < points.size(); i++) {
             gc.strokeLine(points.get(i - 1).x, points.get(i - 1).y, points.get(i).x, points.get(i).y);
         }
+        bezier.getPoints().clear();
     }
 
     @FXML
     private void doClear(ActionEvent event) {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        bezier.getPoints().clear();
     }
 
     @Override
