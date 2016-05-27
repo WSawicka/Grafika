@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="148.0" prefWidth="303.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EditShapeValuesController">
+   <children>
+      <Label layoutX="22.0" layoutY="24.0" prefHeight="43.0" prefWidth="120.0" text="       Wpisz wektor (punkt przesunięcia):" wrapText="true" />
+      <TextField layoutX="165.0" layoutY="45.0" prefHeight="25.0" prefWidth="37.0" fx:id="xVector" />
+      <TextField fx:id="yVector" layoutX="219.0" layoutY="45.0" prefHeight="25.0" prefWidth="37.0" />
+      <Label layoutX="158.0" layoutY="44.0" text="(">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="206.0" layoutY="45.0" prefHeight="25.0" prefWidth="12.0" text=",">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="262.0" layoutY="44.0" text=")">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="additionalValue" layoutX="95.0" layoutY="81.0" prefHeight="25.0" prefWidth="114.0" promptText="kąt / współczynnik" />
+      <Button defaultButton="true" layoutX="222.0" layoutY="106.0" mnemonicParsing="false" onAction="#handleOK" prefHeight="25.0" prefWidth="68.0" text="OK" />
+   </children>
+</AnchorPane>

@@ -1,10 +1,10 @@
 package controller;
 
 import PFile.ReadFile;
-import app.Binarization;
-import app.Filters;
-import app.Histogram;
-import app.PointByPoint;
+import algorithm.Binarization;
+import algorithm.Filters;
+import algorithm.Histogram;
+import algorithm.PointByPoint;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
