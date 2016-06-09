@@ -5,13 +5,13 @@
  */
 package controller;
 
+import algorithm.MatrixTransitions;
 import java.awt.Point;
 import java.io.IOException;
 import static java.lang.Math.abs;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -26,6 +26,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -42,8 +44,11 @@ import lombok.Setter;
 public class DrawShapesController implements Initializable {
 
     private SceneController controller;
+    MatrixTransitions matrix = new MatrixTransitions();
+
     private Point start;
     private Point end;
+
     private Image image;
     private GraphicsContext gc;
     private Object lastShape;
@@ -64,16 +69,12 @@ public class DrawShapesController implements Initializable {
         if (lastShape != null) {
             hasAdditionalValue = false;
             showAndSetEditShapeValues();
-            List<Point> points;
-            
-            // TODO: get points from last draw shape
-            
-            if (lastShape instanceof Line) {
-            } else if (lastShape instanceof Circle) {
-
-            } else if (lastShape instanceof Rectangle) {
-
-            }
+            matrix.setMoveMatrix(vector);
+            Point newStart = matrix.getMovedPoint(start);
+            Point newEnd = end = matrix.getMovedPoint(end);
+            start = newStart;
+            end = newEnd;
+            drawShape(Color.RED);
         }
     }
 
@@ -82,13 +83,14 @@ public class DrawShapesController implements Initializable {
         if (lastShape != null) {
             hasAdditionalValue = true;
             showAndSetEditShapeValues();
-            if (lastShape instanceof Line) {
-
-            } else if (lastShape instanceof Circle) {
-
-            } else if (lastShape instanceof Rectangle) {
-
-            }
+            matrix.setTurnMatrix(vector, additionalValue);
+            //gc.setStroke(Color.RED);
+            //gc.strokeOval(vector.x, vector.y, 3, 3);
+            Point newStart = matrix.getMovedPoint(start);
+            Point newEnd = matrix.getMovedPoint(end);
+            start = newStart;
+            end = newEnd;
+            drawShape(Color.BLUE);
         }
     }
 
@@ -97,13 +99,12 @@ public class DrawShapesController implements Initializable {
         if (lastShape != null) {
             hasAdditionalValue = true;
             showAndSetEditShapeValues();
-            if (lastShape instanceof Line) {
-
-            } else if (lastShape instanceof Circle) {
-
-            } else if (lastShape instanceof Rectangle) {
-
-            }
+            matrix.setScaleMatrix(vector, additionalValue);
+            Point newStart = matrix.getMovedPoint(start);
+            Point newEnd = end = matrix.getMovedPoint(end);
+            start = newStart;
+            end = newEnd;
+            drawShape(Color.BROWN);
         }
     }
 
@@ -121,6 +122,11 @@ public class DrawShapesController implements Initializable {
     @FXML
     private void handleMouseReleased(MouseEvent e) {
         end = new Point((int) e.getX(), (int) e.getY());
+        drawShape(Color.BLACK);
+    }
+
+    private void drawShape(Paint paint){
+        gc.setStroke(paint);
         switch (shape.getValue().toString()) {
             case "Linia":
                 lastShape = new Line(start.x, start.y, end.x, end.y);
@@ -139,7 +145,7 @@ public class DrawShapesController implements Initializable {
                 break;
         }
     }
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gc = canvas.getGraphicsContext2D();

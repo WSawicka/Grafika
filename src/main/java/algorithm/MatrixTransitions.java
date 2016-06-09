@@ -16,29 +16,26 @@ import lombok.Getter;
 public class MatrixTransitions {
 
     private double[][] matrix;
-    private Point vector;
 
-    public MatrixTransitions(Point vector) {
-        this.vector = vector;
+    public void setMoveMatrix(Point vector) {
+        matrix = new double[][]{{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {vector.x, vector.y, 1.0}};
     }
 
-    public void setMoveMatrix() {
-        matrix = new double[][]{{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {this.vector.x, this.vector.y, 1.0}};
+    public void setTurnMatrix(Point vector, double angle) {
+        matrix = new double[][]{{Math.cos(angle), Math.sin(angle), 0.0}, {-Math.sin(angle), Math.cos(angle), 0.0}, {vector.x, vector.y, 1.0}};
+        //matrix = new double[][]{{Math.cos(angle), -Math.sin(angle), 0.0}, {Math.sin(angle), Math.cos(angle), 0.0}, {0, 0, 1.0}};
     }
 
-    public void setTurnMatrix(double angle) {
-        matrix = new double[][]{{Math.cos(angle), Math.sin(angle), 0.0}, {-Math.sin(angle), Math.cos(angle), 0.0}, {this.vector.x, this.vector.y, 1.0}};
-    }
-
-    public void setScaleMatrix(double scalingFactor) {
-        matrix = new double[][]{{scalingFactor, 0.0, 0.0}, {0.0, scalingFactor, 0.0}, {this.vector.x, this.vector.y, 1.0}};
+    public void setScaleMatrix(Point vector, double scalingFactor) {
+        matrix = new double[][]{{scalingFactor, 0.0, 0.0}, {0.0, scalingFactor, 0.0}, {vector.x, vector.y, 1.0}};
+        //matrix = new double[][]{{scalingFactor, 0.0, 0.0}, {0.0, scalingFactor, 0.0}, {0, 0, 1.0}};
     }
 
     private double[] multiplyVectorByMatrix(double[] in) {
         double[] out = new double[3];
         for (int i = 0; i < in.length; i++) {
             for (int repet = 0; repet < in.length; repet++) {
-                out[i] += (in[repet] * matrix[i][repet]);
+                out[repet] += (in[i] * matrix[i][repet]);
             }
         }
         return out;
@@ -47,7 +44,14 @@ public class MatrixTransitions {
     public Point getMovedPoint(Point before) {
         double[] in = new double[]{before.x, before.y, 1};
         double[] out = multiplyVectorByMatrix(in);
-        Point after = new Point((int) out[0], (int) out[1]);
+        Point after = new Point((int) Math.abs(out[0]), (int) Math.abs(out[1]));
+        return after;
+    }
+
+    public Point getMovedPoint(Point before, Point vector, double angle) {
+        double x = Math.abs(vector.x + (before.x - vector.x) * Math.cos(angle) - (before.y - vector.y) * Math.sin(angle));
+        double y = Math.abs(vector.y + (before.x - vector.x) * Math.sin(angle) + (before.y - vector.y) * Math.cos(angle));
+        Point after = new Point((int)x, (int)y);
         return after;
     }
 }
