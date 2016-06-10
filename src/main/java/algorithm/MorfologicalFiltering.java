@@ -24,6 +24,7 @@ public class MorfologicalFiltering {
     private int maskHalfSize;
     private List<int[][]> tablesSE;
     private List<int[][]> tablesThickeningSE;
+    private List<int[][]> tablesThinningSE;
     private boolean findCorners = false;
 
     public MorfologicalFiltering(BufferedImage bi) {
@@ -44,6 +45,12 @@ public class MorfologicalFiltering {
         this.tablesThickeningSE.add(new int[][]{{0, -1, 1}, {-1, 0, 1}, {-1, 1, 1}});
         this.tablesThickeningSE.add(new int[][]{{1, 1, 1}, {-1, 0, 1}, {0, -1, -1}});
         this.tablesThickeningSE.add(new int[][]{{0, -1, -1}, {-1, 0, 1}, {1, 1, 1}});
+        
+        this.tablesThinningSE = new ArrayList<>();
+        this.tablesThinningSE.add(new int[][]{{0, 0, 0}, {-1, 1, -1}, {1, 1, 1}});
+        this.tablesThinningSE.add(new int[][]{{1, 1, 1}, {-1, 1, -1}, {0, 0, 0}});
+        this.tablesThinningSE.add(new int[][]{{1, -1, 0}, {1, 1, 0}, {1, -1, 0}});
+        this.tablesThinningSE.add(new int[][]{{0, -1, 1}, {0, 1, 1}, {0, -1, 1}});
     }
 
     private BufferedImage getCloneOfBufferedImage() {
@@ -142,6 +149,34 @@ public class MorfologicalFiltering {
         return biNew;
     }
 
+    public BufferedImage doThinning() {
+        BufferedImage biNew = getCloneOfBufferedImage();
+
+        int halfLen = tablesSE.get(0).length / 2;
+        for (int indexY = halfLen; indexY < this.bi.getHeight() - halfLen; indexY++) {
+            for (int indexX = halfLen; indexX < this.bi.getWidth() - halfLen; indexX++) {
+
+                if (this.bi.getRGB(indexX, indexY) == Color.BLACK.getRGB()) {
+                    int color = (checkIfSame(indexX, indexY)) ? Color.WHITE.getRGB() : Color.BLACK.getRGB();
+                    biNew.setRGB(indexX, indexY, color);
+                }
+            }
+        }
+
+        this.bi = biNew;
+        
+        for (int indexY = halfLen; indexY < this.bi.getHeight() - halfLen; indexY++) {
+            for (int indexX = halfLen; indexX < this.bi.getWidth() - halfLen; indexX++) {
+
+                if (this.bi.getRGB(indexX, indexY) == Color.BLACK.getRGB()) {
+                    int color = (checkIfSame2(indexX, indexY)) ? Color.WHITE.getRGB() : Color.BLACK.getRGB();
+                    biNew.setRGB(indexX, indexY, color);
+                }
+            }
+        }
+        return biNew;
+    }
+
     private boolean checkIfSame(int x, int y) {
         if (this.findCorners) {
             for (int[][] table : this.tablesSE) {
@@ -154,6 +189,15 @@ public class MorfologicalFiltering {
                 if (checkIfSameTable(table, x, y)) {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    private boolean checkIfSame2(int x, int y) {
+        for (int[][] table : this.tablesThinningSE) {
+            if (checkIfSameTable(table, x, y)) {
+                return true;
             }
         }
         return false;

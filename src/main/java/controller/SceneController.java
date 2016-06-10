@@ -402,7 +402,21 @@ public class SceneController implements Initializable {
         MorfologicalFiltering filter = new MorfologicalFiltering(this.image.getContent());
         filter.setFindCorners(false);
         for (int i = 0; i < 10; i++) {
+            filter.setBi(this.image.getContent());
             this.image.setContent(filter.doThickening());
+        }
+        javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
+        this.imageView.setImage(img);
+    }
+    
+    @FXML
+    private void doThinning(ActionEvent event) {
+        binarize();
+        MorfologicalFiltering filter = new MorfologicalFiltering(this.image.getContent());
+        filter.setFindCorners(false);
+        for (int i = 0; i < 10; i++) {
+            filter.setBi(this.image.getContent());
+            this.image.setContent(filter.doThinning());
         }
         javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
         this.imageView.setImage(img);
