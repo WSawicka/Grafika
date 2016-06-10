@@ -34,7 +34,7 @@ public class SceneController implements Initializable {
     private Mask mask = new Mask();
     int[][] maskTable;
     private Image image;
-    private String nazwa;
+    private String name;
     private Stage stage;
     private String valueR = "";
     private String valueG = "";
@@ -54,7 +54,7 @@ public class SceneController implements Initializable {
         File file = fileChooser.showOpenDialog(this.stage);
         if (file != null) {
             Path path = Paths.get(file.getPath());
-            this.nazwa = path.getFileName().toString();
+            this.name = path.getFileName().toString();
             this.image = ReadFile.readImage(path.toString());
             javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
             this.imageView.setImage(img);
@@ -64,9 +64,9 @@ public class SceneController implements Initializable {
 
     @FXML
     private void doSave(ActionEvent event) throws IOException {
-        int pos = this.nazwa.lastIndexOf(".");
-        String nowyPlik = pos > 0 ? this.nazwa.substring(0, pos) : this.nazwa;
-        File fileToSave = new File(nowyPlik + ".jpg");
+        int pos = this.name.lastIndexOf('.');
+        String newFile = pos > 0 ? this.name.substring(0, pos) : this.name;
+        File fileToSave = new File(newFile + ".jpg");
         ImageIO.write(image.getContent(), "jpg", fileToSave);
     }
 
@@ -90,11 +90,7 @@ public class SceneController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BezierCurve.fxml"));
         Parent root = (Parent) loader.load();
         BezierCurveController bcc = loader.getController();
-
-        Scene newScene = new Scene(root);
-        newScene.getStylesheets().add("/styles/Styles.css");
-        Stage newStage = new Stage();
-        newStage.setScene(newScene);
+        Stage newStage = setSceneAndStage(root);
         bcc.setSceneController(this);
         newStage.showAndWait();
     }
@@ -405,11 +401,7 @@ public class SceneController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DrawShapes.fxml"));
         Parent root = (Parent) loader.load();
         DrawShapesController dsc = loader.getController();
-
-        Scene newScene = new Scene(root);
-        newScene.getStylesheets().add("/styles/Styles.css");
-        Stage newStage = new Stage();
-        newStage.setScene(newScene);
+        Stage newStage = setSceneAndStage(root);
         dsc.setSceneController(this);
         newStage.showAndWait();
     }
@@ -418,11 +410,7 @@ public class SceneController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CmykRgb.fxml"));
         Parent root = (Parent) loader.load();
         CmykRgbController crc = loader.getController();
-
-        Scene newScene = new Scene(root);
-        newScene.getStylesheets().add("/styles/Styles.css");
-        Stage newStage = new Stage();
-        newStage.setScene(newScene);
+        Stage newStage = setSceneAndStage(root);
         crc.setSceneController(this);
         newStage.showAndWait();
     }
@@ -431,11 +419,7 @@ public class SceneController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ThreeValues.fxml"));
         Parent root = (Parent) loader.load();
         ThreeValuesController tvc = loader.getController();
-
-        Scene newScene = new Scene(root);
-        newScene.getStylesheets().add("/styles/Styles.css");
-        Stage newStage = new Stage();
-        newStage.setScene(newScene);
+        Stage newStage = setSceneAndStage(root);
         tvc.setSceneController(this);
         newStage.showAndWait();
     }
@@ -444,14 +428,18 @@ public class SceneController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/OneValue.fxml"));
         Parent root = (Parent) loader.load();
         OneValueController ovc = loader.getController();
+        Stage newStage = setSceneAndStage(root);
+        ovc.setSceneController(this);
+        newStage.showAndWait();
+    }
 
+    private Stage setSceneAndStage(Parent root){
         Scene newScene = new Scene(root);
         newScene.getStylesheets().add("/styles/Styles.css");
         Stage newStage = new Stage();
         newStage.setScene(newScene);
-        ovc.setSceneController(this);
-        newStage.showAndWait();
-    }  
+        return newStage;
+    }
     
     private void binarize(){
         setImageToGrayscale();

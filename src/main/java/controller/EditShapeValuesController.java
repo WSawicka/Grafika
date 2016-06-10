@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 public class EditShapeValuesController implements Initializable {
 
     private DrawShapesController controller;
+    private String redColor = "-fx-text-fill: red;";
 
     @FXML
     private TextField xVector;
@@ -36,7 +37,7 @@ public class EditShapeValuesController implements Initializable {
             try {
                 this.controller.setAdditionalValue(Double.parseDouble(this.additionalValue.getText()));
             } catch (NumberFormatException nfex) {
-                this.additionalValue.setStyle("-fx-text-fill: red;");
+                this.additionalValue.setStyle(redColor);
                 ok = false;
             }
         }
@@ -44,12 +45,12 @@ public class EditShapeValuesController implements Initializable {
             try {
                 this.controller.setVector(new Point(Integer.parseInt(this.xVector.getText()), Integer.parseInt(this.yVector.getText())));
             } catch (NumberFormatException nfex) {
-                this.xVector.setStyle("-fx-text-fill: red;");
-                this.yVector.setStyle("-fx-text-fill: red;");
+                this.xVector.setStyle(redColor);
+                this.yVector.setStyle(redColor);
                 ok = false;
             }
         }
-        if (ok == true) {
+        if (ok) {
             Stage stage = (Stage) this.xVector.getScene().getWindow();
             stage.close();
         }
@@ -64,7 +65,7 @@ public class EditShapeValuesController implements Initializable {
     }
 
     public void setAccesToAdditionalValue() {
-        if (this.controller.isHasAdditionalValue() == true) {
+        if (this.controller.isHasAdditionalValue()) {
             this.additionalValue.setDisable(false);
             this.additionalValue.setVisible(true);
         } else {

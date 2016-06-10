@@ -17,7 +17,6 @@ public class MainApp extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
 
-        //final SceneController controller = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml")).getController();
         final SceneController controller = new SceneController();
         controller.setStage(stage);
 

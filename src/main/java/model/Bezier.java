@@ -30,7 +30,8 @@ public class Bezier {
             double step = 1.0 / steps;
             bezier.add(this.points.get(0));
             for (double t = step; t < 1; t += step) {
-                int x = 0, y = 0;
+                int x = 0;
+                int y = 0;
                 for (int i = 0; i <= n; i++) {
                     x += (binomialTheorem(n, i) * Math.pow(1 - t, n - i) * Math.pow(t, i) * this.points.get(i).x);
                     y += (binomialTheorem(n, i) * Math.pow(1 - t, n - i) * Math.pow(t, i) * this.points.get(i).y);

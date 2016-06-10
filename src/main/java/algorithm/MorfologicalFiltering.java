@@ -57,11 +57,11 @@ public class MorfologicalFiltering {
     }
 
     private boolean hasValueAround(Color color, int x, int y) {
-        int maskI = 0, maskJ = 0;
+        int maskI = 0;
+        int maskJ = 0;
         for (int j = y - maskHalfSize; j < y + maskHalfSize; j++, maskJ++) {
             for (int i = x - maskHalfSize; i < x + maskHalfSize; i++, maskI++) {
                 if (this.mask[maskI][maskJ] == 1 && this.bi.getRGB(x, y) == color.getRGB()) {
-                    int a = this.bi.getRGB(x, y);
                     return true;
                 }
             }

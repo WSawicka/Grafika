@@ -5,6 +5,8 @@
  */
 package algorithm;
 
+import app.Utils;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.List;
 public class Filters {
 
     private BufferedImage bi;
+    private Utils utils;
     private int[][] mask;
     private int maskHalfSize;
     private int maskSummary;
@@ -50,36 +53,39 @@ public class Filters {
 
         for (int indexY = 0; indexY < this.bi.getHeight(); indexY++) {
             for (int indexX = 0; indexX < this.bi.getWidth(); indexX++) {
-
-                if ((indexX - this.maskHalfSize) >= 0 && (indexY - this.maskHalfSize) >= 0
-                        && (indexX + this.maskHalfSize) < this.bi.getWidth() && (indexY + this.maskHalfSize) < this.bi.getHeight()) {
-                    
-                    int r = 0, g = 0, b = 0;
-                    List<Integer> listR = new ArrayList<>();
-                    List<Integer> listG = new ArrayList<>();
-                    List<Integer> listB = new ArrayList<>();
-
-                    for (int i = indexY - this.maskHalfSize; i <= indexY + this.maskHalfSize; i++) {
-                        for (int j = indexX - this.maskHalfSize; j <= indexX + this.maskHalfSize; j++) {
-                            Color actColor = new Color(this.bi.getRGB(j, i));
-                            listR.add(actColor.getRed());
-                            listG.add(actColor.getGreen());
-                            listB.add(actColor.getBlue());
-                        }
-                    }
-                    Collections.sort(listR);
-                    Collections.sort(listG);
-                    Collections.sort(listB);
-                    r = listR.get(listR.size() / 2);
-                    g = listG.get(listG.size() / 2);
-                    b = listB.get(listB.size() / 2);
-
-                    Color newColor = new Color(r, g, b);
-                    biNew.setRGB(indexX, indexY, newColor.getRGB());
-                }
+                setMedianPixel(biNew, indexX, indexY);
             }
         }
         return biNew;
+    }
+
+    private void setMedianPixel(BufferedImage biNew, int indexX, int indexY){
+        if ((indexX - this.maskHalfSize) >= 0 && (indexY - this.maskHalfSize) >= 0
+                && (indexX + this.maskHalfSize) < this.bi.getWidth() && (indexY + this.maskHalfSize) < this.bi.getHeight()) {
+
+            List<Integer> listR = new ArrayList<>();
+            List<Integer> listG = new ArrayList<>();
+            List<Integer> listB = new ArrayList<>();
+
+            for (int i = indexY - this.maskHalfSize; i <= indexY + this.maskHalfSize; i++) {
+                for (int j = indexX - this.maskHalfSize; j <= indexX + this.maskHalfSize; j++) {
+                    Color actColor = new Color(this.bi.getRGB(j, i));
+                    listR.add(actColor.getRed());
+                    listG.add(actColor.getGreen());
+                    listB.add(actColor.getBlue());
+                }
+            }
+            Collections.sort(listR);
+            Collections.sort(listG);
+            Collections.sort(listB);
+
+            int r = listR.get(listR.size() / 2);
+            int g = listG.get(listG.size() / 2);
+            int b = listB.get(listB.size() / 2);
+
+            Color newColor = new Color(r, g, b);
+            biNew.setRGB(indexX, indexY, newColor.getRGB());
+        }
     }
 
     public BufferedImage setBufferedImage() {
@@ -87,42 +93,47 @@ public class Filters {
 
         for (int indexY = 0; indexY < this.bi.getHeight(); indexY++) {
             for (int indexX = 0; indexX < this.bi.getWidth(); indexX++) {
-
-                if ((indexX - this.maskHalfSize) >= 0 && (indexY - this.maskHalfSize) >= 0
-                        && (indexX + this.maskHalfSize) < this.bi.getWidth() && (indexY + this.maskHalfSize) < this.bi.getHeight()) {
-
-                    int maskX = 0;
-                    int maskY = 0;
-                    int r = 0, g = 0, b = 0;
-
-                    for (int i = indexY - this.maskHalfSize; i <= indexY + this.maskHalfSize; i++, maskY++) {
-                        maskX = 0;
-                        for (int j = indexX - this.maskHalfSize; j <= indexX + this.maskHalfSize; j++, maskX++) {
-                            Color actColor = new Color(this.bi.getRGB(j, i));
-                            r += (actColor.getRed() * this.mask[maskX][maskY]);
-                            g += (actColor.getGreen() * this.mask[maskX][maskY]);
-                            b += (actColor.getBlue() * this.mask[maskX][maskY]);
-                        }
-                    }
-
-                    if (this.maskSummary != 0) {
-                        r = r / this.maskSummary;
-                        g = g / this.maskSummary;
-                        b = b / this.maskSummary;
-                    }
-
-                    if (r > 255) r = 255;
-                    else if (r < 0) r = 0;
-                    if (g > 255) g = 255;
-                    else if (g < 0) g = 0;
-                    if (b > 255) b = 255;
-                    else if (b < 0) b = 0;
-
-                    Color newColor = new Color(r, g, b);
-                    biNew.setRGB(indexX, indexY, newColor.getRGB());
-                }
+                setBufferedPixel(biNew, indexX, indexY);
             }
         }
         return biNew;
+    }
+
+    private void setBufferedPixel(BufferedImage biNew, int indexX, int indexY){
+        if ((indexX - this.maskHalfSize) >= 0 && (indexY - this.maskHalfSize) >= 0
+                && (indexX + this.maskHalfSize) < this.bi.getWidth() && (indexY + this.maskHalfSize) < this.bi.getHeight()) {
+
+            int maskY = 0;
+            int r = 0;
+            int g = 0;
+            int b = 0;
+
+            for (int i = indexY - this.maskHalfSize; i <= indexY + this.maskHalfSize; i++, maskY++) {
+                int maskX = 0;
+                for (int j = indexX - this.maskHalfSize; j <= indexX + this.maskHalfSize; j++, maskX++) {
+                    Color actColor = new Color(this.bi.getRGB(j, i));
+                    r += (actColor.getRed() * this.mask[maskX][maskY]);
+                    g += (actColor.getGreen() * this.mask[maskX][maskY]);
+                    b += (actColor.getBlue() * this.mask[maskX][maskY]);
+                }
+            }
+
+            divideByMaskSummary(r, g, b);
+
+            r = utils.limitColor(r);
+            g = utils.limitColor(g);
+            b = utils.limitColor(b);
+
+            Color newColor = new Color(r, g, b);
+            biNew.setRGB(indexX, indexY, newColor.getRGB());
+        }
+    }
+
+    private void divideByMaskSummary(int r, int g, int b){
+        if (this.maskSummary != 0) {
+            r /= this.maskSummary;
+            g /= this.maskSummary;
+            b /= this.maskSummary;
+        }
     }
 }

@@ -75,9 +75,9 @@ public class PointByPoint {
         for (int i = 0; i < bi.getHeight(); i++) {
             for (int j = 0; j < bi.getWidth(); j++) {
                 Color c = new Color(bi.getRGB(j, i));
-                int red = (int) c.getRed();
-                int green = (int) c.getGreen();
-                int blue = (int) c.getBlue();
+                int red = c.getRed();
+                int green = c.getGreen();
+                int blue = c.getBlue();
                 int sum = (red + green + blue) / 3;
                 Color newColor = new Color(sum, sum, sum);
                 bi.setRGB(j, i, newColor.getRGB());

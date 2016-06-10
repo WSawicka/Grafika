@@ -8,7 +8,6 @@ package algorithm;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Arrays;
 import static jdk.nashorn.internal.objects.NativeMath.exp;
 import model.Image;
@@ -103,7 +102,7 @@ public class Binarization {
         int pixels = bi.getHeight() * bi.getWidth();
         BigDecimal[] probability = new BigDecimal[this.histogram.length];
         for (int i = 0; i < probability.length; i++) {
-            probability[i] = (BigDecimal.valueOf((long) this.histogram[i]).divide(BigDecimal.valueOf((long) pixels)));
+            probability[i] = BigDecimal.valueOf((long) this.histogram[i]).divide(BigDecimal.valueOf((long) pixels));
             if (probability[i] == BigDecimal.valueOf(0)) {
                 probability[i] = BigDecimal.valueOf((long) 0.00000001);
             }
@@ -113,8 +112,6 @@ public class Binarization {
         double[] entropy = new double[this.histogram.length];
         for (int i = 0; i < entropy.length; i++) {
             entropy[i] = Math.log(probability[i].doubleValue()) * probability[i].doubleValue();
-            BigDecimal prob = probability[i];
-
         }
 
         //find index of smallest entropy       

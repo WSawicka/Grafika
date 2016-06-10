@@ -71,7 +71,7 @@ public class DrawShapesController implements Initializable {
             showAndSetEditShapeValues();
             matrix.setMoveMatrix(vector);
             Point newStart = matrix.getMovedPoint(start);
-            Point newEnd = end = matrix.getMovedPoint(end);
+            Point newEnd = matrix.getMovedPoint(end);
             start = newStart;
             end = newEnd;
             drawShape(Color.RED);
@@ -101,7 +101,7 @@ public class DrawShapesController implements Initializable {
             showAndSetEditShapeValues();
             matrix.setScaleMatrix(vector, additionalValue);
             Point newStart = matrix.getMovedPoint(start);
-            Point newEnd = end = matrix.getMovedPoint(end);
+            Point newEnd = matrix.getMovedPoint(end);
             start = newStart;
             end = newEnd;
             drawShape(Color.BROWN);

@@ -5,6 +5,8 @@
  */
 package algorithm;
 
+import app.Utils;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
@@ -28,6 +30,7 @@ public class Histogram {
     private int minR = this.MAX_COLOR;
     private int minG = this.MAX_COLOR;
     private int minB = this.MAX_COLOR;
+    private Utils utils;
 
     public Histogram(BufferedImage bi) {
         this.bi = bi;
@@ -38,14 +41,25 @@ public class Histogram {
         for (int y = 0; y < this.bi.getHeight(); y++) {
             for (int x = 0; x < this.bi.getWidth(); x++) {
                 Color color = new Color(this.bi.getRGB(x, y));
-                
-                //FIXME refactor kodu, wyciągnąć do metody i sparametryzować
-                if (color.getRed() < this.minR) this.minR = color.getRed();
-                else if (color.getRed() > this.maxR) this.maxR = color.getRed();
-                if (color.getGreen() < this.minG) this.minG = color.getGreen();
-                else if (color.getGreen() > this.maxG) this.maxG = color.getGreen();
-                if (color.getBlue() < this.minB) this.minB = color.getBlue();
-                else if (color.getBlue() > this.maxB) this.maxB = color.getBlue();
+
+                if (color.getRed() < this.minR) {
+                    this.minR = color.getRed();
+                }
+                else if (color.getRed() > this.maxR) {
+                    this.maxR = color.getRed();
+                }
+                if (color.getGreen() < this.minG) {
+                    this.minG = color.getGreen();
+                }
+                else if (color.getGreen() > this.maxG) {
+                    this.maxG = color.getGreen();
+                }
+                if (color.getBlue() < this.minB) {
+                    this.minB = color.getBlue();
+                }
+                else if (color.getBlue() > this.maxB) {
+                    this.maxB = color.getBlue();
+                }
             }
         }
     }
@@ -72,7 +86,6 @@ public class Histogram {
         double sumG = this.distributionG[0];
         double sumB = this.distributionB[0];
         //to make a proper distribuant
-        double before, after;
         for (int i = 1; i < this.MAX_COLOR + 1; i++) {
             double actR = this.distributionR[i];
             double actG = this.distributionG[i];
@@ -95,7 +108,9 @@ public class Histogram {
 
     private int getIndexOfFirstNotZeroElement(double[] table) {
         for (int i = 0; i < table.length; i++) {
-            if (table[i] != 0.0) return i;
+            if (table[i] != 0.0) {
+                return i;
+            }
         }
         return table.length;
     }
@@ -107,11 +122,6 @@ public class Histogram {
         double dB0 = this.distributionB[getIndexOfFirstNotZeroElement(this.distributionB)];
 
         for (int i = 0; i < this.MAX_COLOR + 1; i++) {
-            double a = this.distributionR[i];
-            double b = (this.distributionR[i] - dR0);
-            double c = (1 - dR0);
-            double d = ((this.distributionR[i] - dR0) / (1 - dR0));
-            
             this.lutR[i] = (int)(((this.distributionR[i] - dR0) / (1 - dR0)) * this.MAX_COLOR);
             this.lutG[i] = (int)(((this.distributionG[i] - dG0) / (1 - dG0)) * this.MAX_COLOR);
             this.lutB[i] = (int)(((this.distributionB[i] - dB0) / (1 - dB0)) * this.MAX_COLOR);
@@ -137,20 +147,10 @@ public class Histogram {
                 int r = actColor.getRed();
                 int g = actColor.getGreen();
                 int b = actColor.getBlue();
-
-                int newR = this.lutR[r];
-                int newG = this.lutG[g];
-                int newB = this.lutB[b];
                 
-                newR = limitColor(newR);
-                newG = limitColor(newG);
-                //TODO poprawić
-                if (newR < 0) newR = 0;
-                else if (newR > 255) newR = 255;
-                if (newG < 0) newG = 0;
-                else if (newG > 255) newG = 255;
-                if (newB < 0) newB = 0;
-                else if (newB > 255) newB = 255;
+                int newR = utils.limitColor(this.lutR[r]);
+                int newG = utils.limitColor(this.lutG[g]);
+                int newB = utils.limitColor(this.lutB[b]);
 
                 Color newColor = new Color(newR, newG, newB);
                 biNew.setRGB(indexX, indexY, newColor.getRGB());
@@ -158,15 +158,5 @@ public class Histogram {
         }
 
         return biNew;
-    }
-
-    private int limitColor(int color) {
-        if(color > 255) {
-            return 255;
-        } else if (color < 0) {
-            return 0;
-        } else {
-            return color;
-        }
     }
 }
