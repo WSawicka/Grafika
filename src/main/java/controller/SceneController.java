@@ -347,57 +347,68 @@ public class SceneController implements Initializable {
         javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
         this.imageView.setImage(img);
     }
-    
+
     @FXML
-    private void doDilation(ActionEvent event){
+    private void doDilation(ActionEvent event) {
         binarize();
         MorfologicalFiltering filter = new MorfologicalFiltering(this.image.getContent());
         this.image.setContent(filter.doDilation());
         javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
         this.imageView.setImage(img);
     }
-    
+
     @FXML
-    private void doErosion(ActionEvent event){
-        binarize();       
-        
-        
-        
-        javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
-        this.imageView.setImage(img);
-    }
-    
-    @FXML
-    private void doOpening(ActionEvent event){
-        binarize();       
-        
-        
-        
-        javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
-        this.imageView.setImage(img);
-    }
-    
-    @FXML
-    private void doClosing(ActionEvent event){
-        binarize();       
-        
-        
-        
-        javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
-        this.imageView.setImage(img);
-    }
-    
-    @FXML
-    private void doHitOrMiss(ActionEvent event){
-        binarize();       
-        
-        
-        
+    private void doErosion(ActionEvent event) {
+        binarize();
+        MorfologicalFiltering filter = new MorfologicalFiltering(this.image.getContent());
+        this.image.setContent(filter.doErosion());
         javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
         this.imageView.setImage(img);
     }
 
-    private void showDrawShapes() throws IOException{
+    @FXML
+    private void doOpening(ActionEvent event) {
+        binarize();
+        MorfologicalFiltering filter = new MorfologicalFiltering(this.image.getContent());
+        this.image.setContent(filter.doErosion());
+        this.image.setContent(filter.doDilation());
+        javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
+        this.imageView.setImage(img);
+    }
+
+    @FXML
+    private void doClosing(ActionEvent event) {
+        binarize();
+        MorfologicalFiltering filter = new MorfologicalFiltering(this.image.getContent());
+        this.image.setContent(filter.doDilation());
+        this.image.setContent(filter.doErosion());
+        javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
+        this.imageView.setImage(img);
+    }
+
+    @FXML
+    private void doHitOrMiss(ActionEvent event) {
+        binarize();
+        MorfologicalFiltering filter = new MorfologicalFiltering(this.image.getContent());
+        filter.setFindCorners(true);
+        this.image.setContent(filter.doHitOrMiss());
+        javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
+        this.imageView.setImage(img);
+    }
+
+    @FXML
+    private void doThickening(ActionEvent event) {
+        binarize();
+        MorfologicalFiltering filter = new MorfologicalFiltering(this.image.getContent());
+        filter.setFindCorners(false);
+        for (int i = 0; i < 10; i++) {
+            this.image.setContent(filter.doThickening());
+        }
+        javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
+        this.imageView.setImage(img);
+    }
+
+    private void showDrawShapes() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DrawShapes.fxml"));
         Parent root = (Parent) loader.load();
         DrawShapesController dsc = loader.getController();
@@ -405,7 +416,7 @@ public class SceneController implements Initializable {
         dsc.setSceneController(this);
         newStage.showAndWait();
     }
-    
+
     private void showCmykRgb() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CmykRgb.fxml"));
         Parent root = (Parent) loader.load();
@@ -433,15 +444,15 @@ public class SceneController implements Initializable {
         newStage.showAndWait();
     }
 
-    private Stage setSceneAndStage(Parent root){
+    private Stage setSceneAndStage(Parent root) {
         Scene newScene = new Scene(root);
         newScene.getStylesheets().add("/styles/Styles.css");
         Stage newStage = new Stage();
         newStage.setScene(newScene);
         return newStage;
     }
-    
-    private void binarize(){
+
+    private void binarize() {
         setImageToGrayscale();
         Binarization binar = new Binarization(this.image);
         this.image = binar.meanSelection();

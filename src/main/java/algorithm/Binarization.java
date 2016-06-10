@@ -74,6 +74,7 @@ public class Binarization {
         while (true) {
             int indexFirstMean = getIndexOfValueNearest(meanFirst, this.histogram);
 
+            if (indexFirstMean == 0) indexFirstMean = 2;
             int[] leftSide = Arrays.copyOfRange(this.histogram, 0, indexFirstMean - 1);
             int[] rightSide = Arrays.copyOfRange(this.histogram, indexFirstMean, this.histogram.length);
 
