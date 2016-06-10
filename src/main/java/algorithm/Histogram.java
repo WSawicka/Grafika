@@ -38,6 +38,8 @@ public class Histogram {
         for (int y = 0; y < this.bi.getHeight(); y++) {
             for (int x = 0; x < this.bi.getWidth(); x++) {
                 Color color = new Color(this.bi.getRGB(x, y));
+                
+                //FIXME refactor kodu, wyciągnąć do metody i sparametryzować
                 if (color.getRed() < this.minR) this.minR = color.getRed();
                 else if (color.getRed() > this.maxR) this.maxR = color.getRed();
                 if (color.getGreen() < this.minG) this.minG = color.getGreen();
@@ -139,7 +141,10 @@ public class Histogram {
                 int newR = this.lutR[r];
                 int newG = this.lutG[g];
                 int newB = this.lutB[b];
-
+                
+                newR = limitColor(newR);
+                newG = limitColor(newG);
+                //TODO poprawić
                 if (newR < 0) newR = 0;
                 else if (newR > 255) newR = 255;
                 if (newG < 0) newG = 0;
@@ -153,5 +158,15 @@ public class Histogram {
         }
 
         return biNew;
+    }
+
+    private int limitColor(int color) {
+        if(color > 255) {
+            return 255;
+        } else if (color < 0) {
+            return 0;
+        } else {
+            return color;
+        }
     }
 }

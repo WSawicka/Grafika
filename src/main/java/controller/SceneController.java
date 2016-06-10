@@ -4,6 +4,7 @@ import PFile.ReadFile;
 import algorithm.Binarization;
 import algorithm.Filters;
 import algorithm.Histogram;
+import algorithm.MorfologicalFiltering;
 import algorithm.PointByPoint;
 import java.io.File;
 import java.io.IOException;
@@ -350,6 +351,55 @@ public class SceneController implements Initializable {
         javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
         this.imageView.setImage(img);
     }
+    
+    @FXML
+    private void doDilation(ActionEvent event){
+        binarize();
+        MorfologicalFiltering filter = new MorfologicalFiltering(this.image.getContent());
+        this.image.setContent(filter.doDilation());
+        javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
+        this.imageView.setImage(img);
+    }
+    
+    @FXML
+    private void doErosion(ActionEvent event){
+        binarize();       
+        
+        
+        
+        javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
+        this.imageView.setImage(img);
+    }
+    
+    @FXML
+    private void doOpening(ActionEvent event){
+        binarize();       
+        
+        
+        
+        javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
+        this.imageView.setImage(img);
+    }
+    
+    @FXML
+    private void doClosing(ActionEvent event){
+        binarize();       
+        
+        
+        
+        javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
+        this.imageView.setImage(img);
+    }
+    
+    @FXML
+    private void doHitOrMiss(ActionEvent event){
+        binarize();       
+        
+        
+        
+        javafx.scene.image.Image img = SwingFXUtils.toFXImage(this.image.getContent(), null);
+        this.imageView.setImage(img);
+    }
 
     private void showDrawShapes() throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DrawShapes.fxml"));
@@ -401,6 +451,12 @@ public class SceneController implements Initializable {
         newStage.setScene(newScene);
         ovc.setSceneController(this);
         newStage.showAndWait();
+    }  
+    
+    private void binarize(){
+        setImageToGrayscale();
+        Binarization binar = new Binarization(this.image);
+        this.image = binar.meanSelection();
     }
 
     public void setStage(Stage stage) {

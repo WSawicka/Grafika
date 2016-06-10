@@ -91,6 +91,15 @@
                   <MenuItem mnemonicParsing="false" onAction="#binarEntropySelection" text="Selekcja entropii" />
               </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="Oper. morfologiczne">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#doDilation" text="Dylatacja" />
+                  <MenuItem mnemonicParsing="false" onAction="#doErosion" text="Erozja" />
+                  <MenuItem mnemonicParsing="false" onAction="#doOpening" text="Otwarcie" />
+                  <MenuItem mnemonicParsing="false" onAction="#doClosing" text="Domknięcie" />
+                  <MenuItem mnemonicParsing="false" onAction="#doHitOrMiss" text="Hit-or-miss" />
+              </items>
+            </Menu>
         </menus>
       </MenuBar>
       <GridPane layoutX="19.0" layoutY="43.0" prefHeight="569.0" prefWidth="931.0">
